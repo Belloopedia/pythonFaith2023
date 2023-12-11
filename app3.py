@@ -1,32 +1,52 @@
 from flask import Flask
-from flask import Mail, Message
-from flask import render_template, request, redirect, url_for, flash
-from flask import SQLAlchemy
+from flask_mail import Mail, Message
+from flask import render_template, request, redirect, url_for, flash, session
+from flask_sqlalchemy import SQLAlchemy
+from flask_wtf import FlaskForm
+from flask_wtf.csrf import CSRFProtect
+from wtforms import StringField, SubmitField
 from twilio.rest import Client
 
+
 app = Flask(__name__)
+csrf = CSRFProtect(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
-app.config['SECRET_KEY'] = 'f9bf78b9a18ce6d46a0cd2b0b86df9da'
-app.config['MAIL_SERVER'] = 'smtp.YourMapper.com'
+app.config['SECRET_KEY'] = 'xxxxxxxxxxxxxxxxxxxxx'
+app.config['MAIL_SERVER'] = 'xxxxxxxxxxxxxxxxxxxxxx'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'myfreelancehotline@gmail.com'
-app.config['MAIL_PASSWORD'] = 'oluwadamilola$1'
-app.config['TWILIO_SID'] = 'AC5b81922e71cda6617342143004b44ca8'
-app.config['TWILIO_AUTH_TOKEN'] = '362bc3175dcf84ff1fb76d3db7fb80f7'
-app.config['TWILIO_PHONE_NUMBER'] = '+2348144945940'
+app.config['MAIL_USERNAME'] = 'xxxxxxxxxxxxxxxxxxx'
+app.config['MAIL_PASSWORD'] = 'xxxxxxxxxxxxxxxxxxxxx'
+app.config['TWILIO_SID'] = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+app.config['TWILIO_AUTH_TOKEN'] = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+app.config['TWILIO_PHONE_NUMBER'] = 'xxxxxxxxxxx'
 
 db = SQLAlchemy(app)
 mail = Mail(app)
+
+
+class RegisterForm(FlaskForm):
+    name = StringField('Name')
+    address = StringField('Address')
+    phone_number = StringField('Phone Number')
+    meter_number = StringField('Meter Number')
+    email = StringField('Email')
+    password = StringField('Password')
+    submit = SubmitField('Register')
+
+
+class LoginForm(FlaskForm):
+    email = StringField('Email')
+    password = StringField('Password')
 
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     address = db.Column(db.String(100), nullable=False)
-    phone_number = db.Column(db.String(15), nullable=False, unique=True)
-    meter_number = db.Column(db.String(20), nullable=False, unique=True)
-    email = db.Column(db.String(120), nullable=False, unique=True)
+    phone_number = db.Column(db.String(15), nullable=False)
+    meter_number = db.Column(db.String(20), nullable=False)
+    email = db.Column(db.String(120), nullable=False) # Add unique=True for uniqueness
     password = db.Column(db.String(60), nullable=False)
 
 
@@ -37,13 +57,21 @@ def index():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    if request.method == 'POST':
-        name = request.form['name']
-        address = request.form['address']
-        phone_number = request.form['phone_number']
-        meter_number = request.form['meter_number']
-        email = request.form['email']
-        password = request.form['password']
+    form = RegisterForm()
+    if form.validate_on_submit():
+        # Process the form data
+        name = form.name.data
+        address = form.address.data
+        phone_number = form.phone_number.data
+        meter_number = form.meter_number.data
+        email = form.email.data
+        password = form.password.data
+
+        # Check if the email already exists
+        existing_user = User.query.filter_by(email=email).first()
+        if existing_user:
+            flash('Email address already registered. Please use a different email.')
+            return redirect(url_for('register'))
 
         user = User(name=name, address=address, phone_number=phone_number,
                     meter_number=meter_number, email=email, password=password)
@@ -51,13 +79,14 @@ def register():
         db.session.add(user)
         db.session.commit()
 
-        send_email(user.email)
-        send_sms(user.phone_number)
+        # YOU CAN UNCOMMENT TO SEND THE EMAIL
+        # send_email(user.email)
+        # send_sms(user.phone_number)
 
         flash('Registration successful! Check your email and phone for confirmation.')
         return redirect(url_for('login'))
 
-    return render_template('register.html')
+    return render_template('register.html', form=form)
 
 
 def send_email(email):
@@ -81,7 +110,23 @@ def send_sms(phone_number):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     # Add login logic here
-    return render_template('login.html')
+    form = LoginForm()
+
+    if form.validate_on_submit():
+        email = form.email.data
+        password = form.password.data
+
+        user = User.query.filter_by(email=email, password=password).first()
+
+        if user:
+            # Log the user in by storing their email in the session
+            session['email'] = user.email
+
+            flash('Login successful!', 'success')
+            return redirect(url_for('dashboard'))
+        else:
+            flash('Invalid email or password. Please try again.', 'danger')
+    return render_template('login.html', form=form)
 
 
 @app.route('/billing')
@@ -90,8 +135,19 @@ def billing():
     return render_template('billing.html')
 
 
+@app.route('/dashboard')
+def dashboard():
+
+    if 'email' in session:
+        user_email = session['email']
+        return render_template('dashboard.html', user_email=user_email)
+    else:
+        flash('You need to login first.', 'warning')
+        return redirect(url_for('login'))
+
+
 with app.app_context():
     db.create_all()
 
 if __name__ == '__main__':
-    app.run(use_reloader=False, debug=False)
+    app.run(use_reloader=True, debug=True)
