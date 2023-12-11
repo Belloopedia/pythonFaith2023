@@ -1,0 +1,12 @@
+<html>
+<head>
+   <!-- Welcome TO FAith Page -->
+</head>   
+<body>
+
+  <img src="{{ url_for('static', filename='Background image.jpg') }}" alt="img">
+  
+  <h1>Hello World</h1>
+
+</body>
+</html>
