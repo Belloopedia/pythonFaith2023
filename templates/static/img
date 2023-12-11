@@ -6,6 +6,7 @@
 <body>
 
   <img src="{{ url_for('static', filename='Background image.jpg') }}" alt="img">
+  <img src="/full/absolute/path/to/loBackground image.jpg">
   
   <h1>Hello World</h1>
 
