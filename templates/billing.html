@@ -1,21 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Python Project</title>
-</head>
-<body>
-    <h2>Billing Page</h2>
+{% extends 'layout.html' %}
 
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <ul>
-                {% for message in messages %}
-                    <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
-</body>
-</html>
+{% block content %}
+
+<div class="billing-page">
+
+  <div class="section">
+    <h1>Billing</h1>
+    
+    <div class="meter">
+      Meter Number: <span>{{current_user.meter_number}}</span> 
+    </div>
+    
+    <div class="usage">
+      <h3>Usage</h3>
+      <table>
+        <tr>
+          <td>Current Reading</td> 
+          <td>{{current_reading}} kWh</td>
+        </tr>
+        <tr>
+          <td>Last Reading</td>
+          <td>{{last_reading}} kWh</td>
+        </tr>
+        <tr>
+          <td>Total Usage</td>
+          <td>{{total_usage}} kWh</td>
+        </tr>
+      </table>
+    </div>
+    
+  </div>
+  
+  <div class="section">
+    <h2>Billing Summary</h2>
+    
+    <div class="bill">
+      <table>
+        <tr>
+          <td>Total Charges</td>
+          <td>${{total_charges}}</td>
+        </tr>
+        <tr>
+          <td>Adjustments</td>
+          <td>$5.00</td>
+        </tr>
+        <tr>
+          <td class="total">Total Current Charges</td>
+          <td class="total">${{billing_total}}</td>  
+        </tr>
+      </table>
+      
+      <div class="due-date">
+        Due on: <span>{{due_date}}</span>
+      </div>
+      
+    </div>
+    
+    <a href="#" class="btn btn-primary">Pay Now</a>
+  </div>
+  
+</div>
+
+{% endblock %}
