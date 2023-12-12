@@ -3,26 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Wellcome To Faith Online Electricity Payment System - HOME</title>
+
+    <style>
+        body {
+            /* Set the background image */
+            background-image: url('C:\Users\Administrator\Desktop\Background image.jpg');
+            /* Set background size to cover the whole screen */
+            background-size: cover;
+            /* Center the background image */
+            background-position: center;
+            /* Set a fixed background for the entire page */
+            background-attachment: fixed;
+            /* Add additional styles if needed */
+            color: white; /* Example: Set text color to white */
+        }
+
+        h1 {
+            /* Style for the heading */
+            text-align: center;
+        }
+
+        ul {
+            /* Style for the navigation menu */
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333;
+        }
+
+        li {
+            float: left;
+        }
+
+        li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        li a:hover {
+            background-color: #111;
+        }
+    </style>
 </head>
 <body>
     <h1>Python Faith 2023 - HOME</h1>
 
     <ul>
-        <li><a href="{{ url_for('index') }}">home</a></li>
-        <li><a href="{{ url_for('billing') }}">billing</a></li>
-        <li><a href="{{ url_for('login') }}">login</a></li>
-        <li><a href="{{ url_for('register') }}">register</a></li>
+        <li><a href="/">home</a></li>
+        <li><a href="/billing">billing</a></li>
+        <li><a href="/login">login</a></li>
+        <li><a href="/register">register</a></li>
     </ul>
 
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <ul>
-                {% for message in messages %}
-                    <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
+    <!-- Add your content here -->
+
 </body>
 </html>
