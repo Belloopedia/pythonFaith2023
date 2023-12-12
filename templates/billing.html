@@ -29,7 +29,6 @@
         </tr>
       </table>
     </div>
-    
   </div>
   
   <div class="section">
@@ -54,17 +53,14 @@
       <div class="due-date">
         Due on: <span>{{ due_date }}</span>
       </div>
-      
     </div>
     
     <form method="POST" action="{{ url_for('make_payment', user_id=user.id) }}">
         <!-- Add payment form fields here -->
         <button type="submit" class="btn btn-primary">Pay Now</button>
     </form>
-  </html>
-
   </div>
-  
 </div>
 
 {% endblock %}
+</html>
