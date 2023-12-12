@@ -53,7 +53,6 @@ class User(db.Model):
 @app.route('/')
 def index():
     return render_template('index.html')
-url_for()
 app.config['SERVE_STATIC'] = True
 
 @app.route('/register', methods=['GET', 'POST'])
