@@ -129,12 +129,26 @@ def login():
             flash('Invalid email or password. Please try again.', 'danger')
     return render_template('login.html', form=form)
 
+class Billing(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    amount = db.Column(db.Float, nullable=False)
+    payment_status = db.Column(db.Boolean, default=False)
+    due_date = db.Column(db.Date, nullable=False)
 
-@app.route('/billing')
-def billing():
-    # Add billing logic here
-    return render_template('billing.html')
+@app.route('/billing/<int:user_id>')
+def billing(user_id):
+    user = User.query.get_or_404(user_id)
+    billing_info = Billing.query.filter_by(user_id=user_id).first()
 
+    if billing_info:
+        return render_template('billing.html', user=user, billing_info=billing_info)
+    else:
+        return render_template('billing.html', user=user, message='No billing information available.')
+
+@app.route('/make_payment', methods=['POST'])
+def make_payment():
+        return redirect(url_for('billing', user_id=User))
 
 @app.route('/dashboard')
 def dashboard():
