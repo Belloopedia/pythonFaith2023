@@ -51,7 +51,7 @@
     </style>
 </head>
 <body>
-    <h1>Python Faith 2023 - HOME</h1>
+    <h1>Wellcome To Faith Online Electricity Payment System - HOME</h1>
 
     <ul>
         <li><a href="/">home</a></li>
@@ -59,8 +59,15 @@
         <li><a href="/login">login</a></li>
         <li><a href="/register">register</a></li>
     </ul>
-
-    <!-- Add your content here -->
-
+    
+{% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
 </body>
 </html>
