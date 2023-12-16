@@ -141,10 +141,10 @@ def billing_route(user_id):
     billing_info = Billing.query.filter_by(user_id=user_id).first()
 
     if billing_info:
-        current_reading = get_current_reading()  # Replace with your logic to get current reading
-        last_reading = get_last_reading()  # Replace with your logic to get last reading
+        current_reading = 'get_current_reading'()  # Replace with your logic to get current reading
+        last_reading = 'get_last_reading'()  # Replace with your logic to get last reading
         total_usage = current_reading - last_reading  # Replace with your logic to calculate total usage
-        total_charges = calculate_total_charges(billing_info.amount)  # Replace with your logic to calculate total charges
+        total_charges = 'calculate_total_charges'(billing_info.amount)  # Replace with your logic to calculate total charges
         billing_total = total_charges + 5.00  # Assuming $5.00 adjustments, replace with your logic
         due_date = billing_info.due_date.strftime('%Y-%m-%d')  # Format due date as needed
 
