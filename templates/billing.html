@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+{% extends 'layout.html' %}
 
 {% block content %}
 
@@ -9,7 +9,7 @@
     <h1>Billing</h1>
     
     <div class="meter">
-      Meter Number: <span>{{ current_user.meter_number }}</span> 
+      Meter Number: <span>{{current_user.meter_number}}</span> 
     </div>
     
     <div class="usage">
@@ -17,18 +17,19 @@
       <table>
         <tr>
           <td>Current Reading</td> 
-          <td>{{ current_reading }} kWh</td>
+          <td>{{current_reading}} kWh</td>
         </tr>
         <tr>
           <td>Last Reading</td>
-          <td>{{ last_reading }} kWh</td>
+          <td>{{last_reading}} kWh</td>
         </tr>
         <tr>
           <td>Total Usage</td>
-          <td>{{ total_usage }} kWh</td>
+          <td>{{total_usage}} kWh</td>
         </tr>
       </table>
     </div>
+    
   </div>
   
   <div class="section">
@@ -38,7 +39,7 @@
       <table>
         <tr>
           <td>Total Charges</td>
-          <td>${{ total_charges }}</td>
+          <td>${{total_charges}}</td>
         </tr>
         <tr>
           <td>Adjustments</td>
@@ -46,21 +47,19 @@
         </tr>
         <tr>
           <td class="total">Total Current Charges</td>
-          <td class="total">${{ billing_total }}</td>  
+          <td class="total">${{billing_total}}</td>  
         </tr>
       </table>
       
       <div class="due-date">
-        Due on: <span>{{ due_date }}</span>
+        Due on: <span>{{due_date}}</span>
       </div>
+      
     </div>
     
-    <form method="POST" action="{{ url_for('make_payment', user_id=user.id) }}">
-        <!-- Add payment form fields here -->
-        <button type="submit" class="btn btn-primary">Pay Now</button>
-    </form>
+    <a href="#" class="btn btn-primary">Pay Now</a>
   </div>
+  
 </div>
 
 {% endblock %}
-</html>
