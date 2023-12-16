@@ -6,7 +6,6 @@ from flask_wtf import FlaskForm
 from flask_wtf.csrf import CSRFProtect
 from wtforms import StringField, SubmitField
 from twilio.rest import Client
-from models import db, User, Billing
 from models import User
 
 app = Flask(__name__)
