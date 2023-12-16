@@ -6,11 +6,12 @@ from flask_wtf import FlaskForm
 from flask_wtf.csrf import CSRFProtect
 from wtforms import StringField, SubmitField
 from twilio.rest import Client
-
+from models import db, User, Billing
+from models import User
 
 app = Flask(__name__)
 csrf = CSRFProtect(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://Belloopedia:Oluwadamilola$1@http://127.0.0.1:5000/db'
 app.config['SECRET_KEY'] = 'xxxxxxxxxxxxxxxxxxxxx'
 app.config['MAIL_SERVER'] = 'xxxxxxxxxxxxxxxxxxxxxx'
 app.config['MAIL_PORT'] = 587
