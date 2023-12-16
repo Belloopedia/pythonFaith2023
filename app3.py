@@ -136,19 +136,36 @@ class Billing(db.Model):
     due_date = db.Column(db.Date, nullable=False)
 
 @app.route('/billing/<int:user_id>')
-def billing(user_id):
+def billing_route(user_id):
     user = User.query.get_or_404(user_id)
     billing_info = Billing.query.filter_by(user_id=user_id).first()
 
     if billing_info:
-        return render_template('billing.html', user=user, billing_info=billing_info)
+        current_reading = get_current_reading()  # Replace with your logic to get current reading
+        last_reading = get_last_reading()  # Replace with your logic to get last reading
+        total_usage = current_reading - last_reading  # Replace with your logic to calculate total usage
+        total_charges = calculate_total_charges(billing_info.amount)  # Replace with your logic to calculate total charges
+        billing_total = total_charges + 5.00  # Assuming $5.00 adjustments, replace with your logic
+        due_date = billing_info.due_date.strftime('%Y-%m-%d')  # Format due date as needed
+
+        return render_template('billing_template.html',
+                               current_user=user,
+                               current_reading=current_reading,
+                               last_reading=last_reading,
+                               total_usage=total_usage,
+                               total_charges=total_charges,
+                               billing_total=billing_total,
+                               due_date=due_date)
     else:
-        return render_template('billing.html', user=user, message='No billing information available.')
+        return render_template('billing_template.html', user=user, message='No billing information available.')
 
 @app.route('/make_payment', methods=['POST'])
 def make_payment():
-        return redirect(url_for('billing', user_id=User))
-
+    # Handle payment logic here
+    # Update the payment status in the Billing model
+    # You may use a payment gateway API or a payment form
+    return redirect(url_for('billing_route', user_id=User.id))
+    
 @app.route('/dashboard')
 def dashboard():
 
