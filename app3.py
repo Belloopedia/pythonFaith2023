@@ -129,9 +129,6 @@ def login():
             flash('Invalid email or password. Please try again.', 'danger')
     return render_template('login.html', form=form)
 
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    # Add other user fields as needed
 
 class Billing(db.Model):
     id = db.Column(db.Integer, primary_key=True)
