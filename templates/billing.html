@@ -1,65 +1,99 @@
 <!DOCTYPE html>
-{% extends 'layout.html' %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Billing Mode</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
 
-{% block content %}
+    form {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
 
-<div class="billing-page">
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
 
-  <div class="section">
-    <h1>Billing</h1>
-    
-    <div class="meter">
-      Meter Number: <span>{{current_user.meter_number}}</span> 
-    </div>
-    
-    <div class="usage">
-      <h3>Usage</h3>
-      <table>
-        <tr>
-          <td>Current Reading</td> 
-          <td>{{current_reading}} kWh</td>
-        </tr>
-        <tr>
-          <td>Last Reading</td>
-          <td>{{last_reading}} kWh</td>
-        </tr>
-        <tr>
-          <td>Total Usage</td>
-          <td>{{total_usage}} kWh</td>
-        </tr>
-      </table>
-    </div>
-    
-  </div>
-  
-  <div class="section">
-    <h2>Billing Summary</h2>
-    
-    <div class="bill">
-      <table>
-        <tr>
-          <td>Total Charges</td>
-          <td>${{total_charges}}</td>
-        </tr>
-        <tr>
-          <td>Adjustments</td>
-          <td>$5.00</td>
-        </tr>
-        <tr>
-          <td class="total">Total Current Charges</td>
-          <td class="total">${{billing_total}}</td>  
-        </tr>
-      </table>
-      
-      <div class="due-date">
-        Due on: <span>{{due_date}}</span>
-      </div>
-      
-    </div>
-    
-    <a href="#" class="btn btn-primary">Pay Now</a>
-  </div>
-  
-</div>
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 16px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
 
-{% endblock %}
+    button {
+      background-color: #4caf50;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+
+  <form>
+    <h2>Billing Mode</h2>
+
+    <h3>Pay by bank Draft:</h3>
+    <label for="accountType">Account type</label>
+    <input type="text" id="accountType" name="accountType" required>
+
+    <label for="routingNumber">Routing Number</label>
+    <input type="text" id="routingNumber" name="routingNumber" required>
+
+    <label for="reEnterRouting">Re-enter Routing</label>
+    <input type="text" id="reEnterRouting" name="reEnterRouting" required>
+
+    <label for="bankAccountNumber">Bank Account Number</label>
+    <input type="text" id="bankAccountNumber" name="bankAccountNumber" required>
+
+    <label for="reEnterBankAccount">Re-enter Bank Account</label>
+    <input type="text" id="reEnterBankAccount" name="reEnterBankAccount" required>
+
+    <h3>Billing Address:</h3>
+    <label for="name">Name</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="address">Address</label>
+    <input type="text" id="address" name="address" required>
+
+    <label for="city">City</label>
+    <input type="text" id="city" name="city" required>
+
+    <label for="meterNumber">Meter Number</label>
+    <input type="text" id="meterNumber" name="meterNumber" required>
+
+    <label for="state">State</label>
+    <input type="text" id="state" name="state" required>
+
+    <label for="zip">Zip</label>
+    <input type="text" id="zip" name="zip" required>
+
+    <button type="submit">Submit</button>
+  </form>
+
+</body>
+</html>
