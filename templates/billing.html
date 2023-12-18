@@ -4,96 +4,34 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Billing Mode</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
-    form {
-      background-color: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: bold;
-    }
-
-    input {
-      width: 100%;
-      padding: 8px;
-      margin-bottom: 16px;
-      box-sizing: border-box;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-
-    button {
-      background-color: #4caf50;
-      color: #fff;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #45a049;
-    }
-  </style>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- Include Bootstrap CSS for styling, you can customize it further -->
 </head>
 <body>
 
-  <form>
-    <h2>Billing Mode</h2>
+  <div class="container mt-5">
+    <form method="post">
+      <h2>Billing Mode</h2>
 
-    <h3>Pay by bank Draft:</h3>
-    <label for="accountType">Account type</label>
-    <input type="text" id="accountType" name="accountType" required>
+      <h3>Pay by bank Draft:</h3>
+      {{ form.hidden_tag() }}
+      {{ form.account_type.label }} {{ form.account_type(size=32) }}
+      {{ form.routing_number.label }} {{ form.routing_number(size=32) }}
+      {{ form.re_enter_routing.label }} {{ form.re_enter_routing(size=32) }}
+      {{ form.bank_account_number.label }} {{ form.bank_account_number(size=32) }}
+      {{ form.re_enter_bank_account.label }} {{ form.re_enter_bank_account(size=32) }}
 
-    <label for="routingNumber">Routing Number</label>
-    <input type="text" id="routingNumber" name="routingNumber" required>
+      <h3>Billing Address:</h3>
+      {{ form.name.label }} {{ form.name(size=32) }}
+      {{ form.address.label }} {{ form.address(size=32) }}
+      {{ form.city.label }} {{ form.city(size=32) }}
+      {{ form.meter_number.label }} {{ form.meter_number(size=32) }}
+      {{ form.state.label }} {{ form.state(size=32) }}
+      {{ form.zip_code.label }} {{ form.zip_code(size=32) }}
 
-    <label for="reEnterRouting">Re-enter Routing</label>
-    <input type="text" id="reEnterRouting" name="reEnterRouting" required>
-
-    <label for="bankAccountNumber">Bank Account Number</label>
-    <input type="text" id="bankAccountNumber" name="bankAccountNumber" required>
-
-    <label for="reEnterBankAccount">Re-enter Bank Account</label>
-    <input type="text" id="reEnterBankAccount" name="reEnterBankAccount" required>
-
-    <h3>Billing Address:</h3>
-    <label for="name">Name</label>
-    <input type="text" id="name" name="name" required>
-
-    <label for="address">Address</label>
-    <input type="text" id="address" name="address" required>
-
-    <label for="city">City</label>
-    <input type="text" id="city" name="city" required>
-
-    <label for="meterNumber">Meter Number</label>
-    <input type="text" id="meterNumber" name="meterNumber" required>
-
-    <label for="state">State</label>
-    <input type="text" id="state" name="state" required>
-
-    <label for="zip">Zip</label>
-    <input type="text" id="zip" name="zip" required>
-
-    <button type="submit">Submit</button>
-  </form>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
 
 </body>
 </html>
