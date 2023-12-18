@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Billing Mode</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- Include Bootstrap CSS for styling, you can customize it further -->
+</head>
+<body>
+
+  <div class="container mt-5">
+    <form method="post">
+      <h2>Billing Mode</h2>
+
+      <h3>Pay by bank Draft:</h3>
+      {{ form.hidden_tag() }}
+      {{ form.account_type.label }} {{ form.account_type(size=32) }}
+      {{ form.routing_number.label }} {{ form.routing_number(size=32) }}
+      {{ form.re_enter_routing.label }} {{ form.re_enter_routing(size=32) }}
+      {{ form.bank_account_number.label }} {{ form.bank_account_number(size=32) }}
+      {{ form.re_enter_bank_account.label }} {{ form.re_enter_bank_account(size=32) }}
+
+      <h3>Billing Address:</h3>
+      {{ form.name.label }} {{ form.name(size=32) }}
+      {{ form.address.label }} {{ form.address(size=32) }}
+      {{ form.city.label }} {{ form.city(size=32) }}
+      {{ form.meter_number.label }} {{ form.meter_number(size=32) }}
+      {{ form.state.label }} {{ form.state(size=32) }}
+      {{ form.zip_code.label }} {{ form.zip_code(size=32) }}
+
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+
+</body>
+</html>
