@@ -6,10 +6,12 @@ from flask_wtf import FlaskForm
 from flask_wtf.csrf import CSRFProtect
 from wtforms import StringField, SubmitField
 from twilio.rest import Client
+from wtforms.validators import InputRequired
 
 app = Flask(__name__)
 csrf = CSRFProtect(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'xxxxxxxxxxxxxxxxxxxxx'
 app.config['MAIL_SERVER'] = 'xxxxxxxxxxxxxxxxxxxxxx'
 app.config['MAIL_PORT'] = 587
@@ -127,6 +129,10 @@ def login():
             flash('Invalid email or password. Please try again.', 'danger')
     return render_template('login.html', form=form)
 
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    # Add other user fields as needed
+
 class Billing(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
@@ -134,10 +140,31 @@ class Billing(db.Model):
     payment_status = db.Column(db.Boolean, default=False)
     due_date = db.Column(db.Date, nullable=False)
 
-@app.route('/billing/<int:user_id>')
+class BillingForm(FlaskForm):
+    account_type = StringField('Account Type', validators=[InputRequired()])
+    routing_number = StringField('Routing Number', validators=[InputRequired()])
+    re_enter_routing = StringField('Re-enter Routing', validators=[InputRequired()])
+    bank_account_number = StringField('Bank Account Number', validators=[InputRequired()])
+    re_enter_bank_account = StringField('Re-enter Bank Account', validators=[InputRequired()])
+    name = StringField('Name', validators=[InputRequired()])
+    address = StringField('Address', validators=[InputRequired()])
+    city = StringField('City', validators=[InputRequired()])
+    meter_number = StringField('Meter Number', validators=[InputRequired()])
+    state = StringField('State', validators=[InputRequired()])
+    zip_code = StringField('Zip', validators=[InputRequired()])
+    submit = SubmitField('Submit')
+
+@app.route('/billing/<int:user_id>', methods=['GET', 'POST'])
 def billing_route(user_id):
     user = User.query.get_or_404(user_id)
     billing_info = Billing.query.filter_by(user_id=user_id).first()
+
+    form = BillingForm()
+
+    if form.validate_on_submit():
+        # Handle form submission and payment logic here
+        # Update the payment status in the Billing model
+        return redirect(url_for('billing_route', user_id=user_id))
 
     if billing_info:
         current_reading = get_current_reading()  # Replace with your logic to get current reading
@@ -149,6 +176,7 @@ def billing_route(user_id):
 
         return render_template('billing_template.html',
                                current_user=user,
+                               form=form,
                                current_reading=current_reading,
                                last_reading=last_reading,
                                total_usage=total_usage,
@@ -156,7 +184,7 @@ def billing_route(user_id):
                                billing_total=billing_total,
                                due_date=due_date)
     else:
-        return render_template('billing_template.html', user=user, message='No billing information available.')
+        return render_template('billing_template.html', user=user, form=form, message='No billing information available.')
 
 @app.route('/make_payment', methods=['POST'])
 def make_payment():
